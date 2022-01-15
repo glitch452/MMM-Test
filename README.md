@@ -12,6 +12,8 @@ This module is intended to assist with module development. It displays a list of
 
 - None
 
+
+
 ## Example
 
 ![Screenshot of MMM-ViewNotifications](/images/sample.png?raw=true 'Example screenshot')
