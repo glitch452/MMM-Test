@@ -885,6 +885,11 @@
                 if (Array.isArray(n.payload)) {
                     output = replaceAll(output, '{payloadList}', "Array (".concat(n.payload.length, ")"));
                 }
+                else if (typeof n.payload === 'string' ||
+                    typeof n.payload === 'boolean' ||
+                    typeof n.payload === 'number') {
+                    output = replaceAll(output, '{payloadList}', typeof n.payload);
+                }
                 else {
                     output = replaceAll(output, '{payloadList}', Object.keys(n.payload).toString());
                 }

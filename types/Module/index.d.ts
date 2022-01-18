@@ -17,7 +17,7 @@ declare namespace Module {
     datetime: Date;
     timeout: Date;
     notification: string;
-    payload?: Record<string, unknown> | Array<unknown> | null;
+    payload?: unknown;
     sender: Module.ModuleProperties<unknown>;
   }
 
@@ -68,7 +68,7 @@ declare namespace Module {
     getHeader: () => string;
     notificationReceived: (
       notification: string,
-      payload: Notification['payload'],
+      payload: unknown,
       sender?: ModuleProperties<unknown>,
     ) => void;
     socketNotificationReceived: (notification: string, payload: unknown) => void;
@@ -80,9 +80,11 @@ declare namespace Module {
     readonly updateDom: (speed?: number) => void;
     readonly sendNotification: (notification: string, payload: unknown) => void;
     readonly sendSocketNotification: (notification: string, payload: unknown) => void;
-    readonly hide: NonNullable<
-      (speed?: number, callback?: () => void, options?: { lockString: string }) => void
-    >;
+    readonly hide: (
+      speed?: number,
+      callback?: () => void,
+      options?: { lockString: string },
+    ) => void;
     readonly show: (
       speed?: number,
       callback?: () => void,
@@ -131,8 +133,8 @@ declare module 'node_helper' {
     start: () => void;
     stop: () => void;
     socketNotificationReceived: (notification: string, payload: unknown) => void;
-
     sendSocketNotification: (notification: string, payload: unknown) => void;
+
     [key: string]: unknown;
   }
 }

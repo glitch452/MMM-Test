@@ -138,8 +138,15 @@ export const MODULE: Module.RegisterProperties<ModuleConfig> = {
     } else {
       if (Array.isArray(n.payload)) {
         output = replaceAll(output, '{payloadList}', `Array (${n.payload.length})`);
+      } else if (
+        typeof n.payload === 'string' ||
+        typeof n.payload === 'boolean' ||
+        typeof n.payload === 'number'
+      ) {
+        output = replaceAll(output, '{payloadList}', typeof n.payload);
       } else {
-        output = replaceAll(output, '{payloadList}', Object.keys(n.payload).toString());
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        output = replaceAll(output, '{payloadList}', Object.keys(n.payload as object).toString());
       }
       output = replaceAll(output, '{payloadData}', JSON.stringify(n.payload));
     }
