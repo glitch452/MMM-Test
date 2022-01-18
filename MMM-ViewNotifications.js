@@ -808,6 +808,8 @@
             return ['moment.js'];
         }, getStyles: function () {
             return ["".concat(this.name, ".css"), 'font-awesome.css'];
+        }, getTranslations: function () {
+            return { en: 'translations/en.json' };
         }, notificationReceived: function (notification, payload, sender) {
             if (this.has_config_error) {
                 return;
@@ -876,8 +878,8 @@
                 output = output.replace(match[0], moment__default["default"](n.datetime.getTime()).format(match[1]));
             }
             if (n.payload === null || n.payload === undefined) {
-                output = replaceAll(output, '{payloadList}', 'no payload');
-                output = replaceAll(output, '{payloadData}', 'no payload');
+                output = replaceAll(output, '{payloadList}', this.translate('NO_PAYLOAD'));
+                output = replaceAll(output, '{payloadData}', this.translate('NO_PAYLOAD'));
             }
             else {
                 if (Array.isArray(n.payload)) {
@@ -892,7 +894,7 @@
         }, getDom: function () {
             var _this = this;
             if (this.has_config_error) {
-                return React.createElement(ErrorList, { title: "Configuration error!", error_list: this.config_errors });
+                return (React.createElement(ErrorList, { title: this.translate('CONFIGURATION_ERROR'), error_list: this.config_errors }));
             }
             var notifications = this.config.newestOnTop
                 ? this.notifications.slice().reverse()

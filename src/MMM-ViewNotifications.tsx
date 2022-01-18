@@ -27,6 +27,10 @@ export const MODULE: Module.RegisterProperties<ModuleConfig> = {
     return [`${this.name}.css`, 'font-awesome.css'];
   },
 
+  getTranslations() {
+    return { en: 'translations/en.json' };
+  },
+
   notificationReceived(
     notification: string,
     payload: Module.Notification['payload'],
@@ -129,8 +133,8 @@ export const MODULE: Module.RegisterProperties<ModuleConfig> = {
     }
 
     if (n.payload === null || n.payload === undefined) {
-      output = replaceAll(output, '{payloadList}', 'no payload');
-      output = replaceAll(output, '{payloadData}', 'no payload');
+      output = replaceAll(output, '{payloadList}', this.translate('NO_PAYLOAD'));
+      output = replaceAll(output, '{payloadData}', this.translate('NO_PAYLOAD'));
     } else {
       if (Array.isArray(n.payload)) {
         output = replaceAll(output, '{payloadList}', `Array (${n.payload.length})`);
@@ -145,7 +149,9 @@ export const MODULE: Module.RegisterProperties<ModuleConfig> = {
 
   getDom(): React.ReactNode {
     if (this.has_config_error) {
-      return <ErrorList title="Configuration error!" error_list={this.config_errors} />;
+      return (
+        <ErrorList title={this.translate('CONFIGURATION_ERROR')} error_list={this.config_errors} />
+      );
     }
 
     const notifications = this.config.newestOnTop
