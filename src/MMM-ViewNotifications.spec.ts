@@ -25,8 +25,10 @@ describe('MMM-ViewNotifications', () => {
 
   beforeEach(() => {
     const updateDom = (_time: number) => undefined;
+    const translate = (key: string) => key;
     test_module = {
       updateDom,
+      translate,
       name: MODULE_NAME,
       ...MODULE,
     } as Module.ModuleProperties<ModuleConfig>;
@@ -443,7 +445,7 @@ describe('MMM-ViewNotifications', () => {
     });
 
     it('should replace the {payloadList} and {payloadData} with `no payload` when there is no payload', () => {
-      const payload_val = 'no payload';
+      const payload_val = 'NO_PAYLOAD';
       const format = 'This is a {payloadList} - {payloadList} for {payloadData} - {payloadData}';
       test_module.setConfig({ ...DEFAULT_CONFIG, format });
       const expected = `This is a ${payload_val} - ${payload_val} for ${payload_val} - ${payload_val}`;
@@ -570,7 +572,7 @@ describe('MMM-ViewNotifications', () => {
       test_module.setConfig({ ...DEFAULT_CONFIG, timeout: -1 });
       const dom_objects = test_module.getDom();
       const actual = dom_objects.outerHTML;
-      const expected = `<div class="loading small">Configuration error!<br>'timeout': Value should be greater than or equal to 0</div>`;
+      const expected = `<div class="loading small">CONFIGURATION_ERROR<br>'timeout': Value should be greater than or equal to 0</div>`;
 
       expect(actual).to.equal(expected);
     });
