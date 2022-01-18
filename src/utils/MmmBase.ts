@@ -8,7 +8,10 @@ export interface MinimumConfig {
 
 type This = Module.ModuleProperties<MinimumConfig>;
 
-export type MmmBase = Pick<This, 'init' | 'setConfig' | 'start' | 'notificationReceived'>;
+export type MmmBase = Pick<
+  This,
+  'init' | 'setConfig' | 'start' | 'suspend' | 'resume' | 'notificationReceived'
+>;
 
 export interface MmmBaseConstructor {
   new <O extends MinimumConfig, D, I>(schema: ZodSchema<O, D, I>, logger?: Module.Logger): MmmBase;
@@ -53,6 +56,14 @@ export const MmmBase = function <O extends MinimumConfig, D, I>(
   this.start = function (this: This) {
     this.logger.debug(`start(): this.data: ${JSON.stringify(this.data)}`);
     this.logger.debug(`start(): this.config: ${JSON.stringify(this.config)}`);
+  };
+
+  this.suspend = function () {
+    this.logger.info(this.translate('SUSPENDING'));
+  };
+
+  this.resume = function () {
+    this.logger.info(this.translate('RESUMING'));
   };
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

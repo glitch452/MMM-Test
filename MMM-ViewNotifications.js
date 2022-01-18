@@ -796,6 +796,12 @@
             this.logger.debug("start(): this.data: ".concat(JSON.stringify(this.data)));
             this.logger.debug("start(): this.config: ".concat(JSON.stringify(this.config)));
         };
+        this.suspend = function () {
+            this.logger.info(this.translate('SUSPENDING'));
+        };
+        this.resume = function () {
+            this.logger.info(this.translate('RESUMING'));
+        };
         this.notificationReceived = function () { };
     };
 
@@ -811,7 +817,7 @@
         }, getTranslations: function () {
             return { en: 'translations/en.json' };
         }, notificationReceived: function (notification, payload, sender) {
-            if (this.has_config_error) {
+            if (this.has_config_error || this.hidden) {
                 return;
             }
             if (sender) {
@@ -829,13 +835,18 @@
                     this.updateDom(this.config.updateAnimationSpeed);
                 }
             }
+        }, resume: function () {
+            MMM_BASE.resume.call(this);
+            this.cleanupNotificationsList();
         }, scheduleNotificationCleanup: function () {
             var _this = this;
             if (this.config.timeout > 0) {
                 var timeout_offset_in_ms = 50;
                 setTimeout(function () {
-                    _this.cleanupNotificationsList();
-                    _this.updateDom(_this.config.updateAnimationSpeed);
+                    if (!_this.hidden) {
+                        _this.cleanupNotificationsList();
+                        _this.updateDom(_this.config.updateAnimationSpeed);
+                    }
                 }, this.config.timeout + timeout_offset_in_ms);
             }
         }, notificationShouldBeAdded: function (n) {

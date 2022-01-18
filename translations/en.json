@@ -1,4 +1,6 @@
 {
   "CONFIGURATION_ERROR": "Configuration error!",
-  "NO_PAYLOAD": "no payload"
+  "NO_PAYLOAD": "no payload",
+  "RESUMING": "Resuming",
+  "SUSPENDING": "Suspending"
 }

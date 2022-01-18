@@ -29,6 +29,7 @@ describe('MMM-ViewNotifications', () => {
     test_module = {
       updateDom,
       translate,
+      hidden: false,
       name: MODULE_NAME,
       ...MODULE,
     } as Module.ModuleProperties<ModuleConfig>;
@@ -74,6 +75,14 @@ describe('MMM-ViewNotifications', () => {
     });
   });
 
+  describe('getTranslations', () => {
+    it('should return an object of strings', () => {
+      const actual = Object.keys(test_module.getTranslations());
+      expect(actual).to.be.an('array').that.is.not.empty;
+      expect(actual.every((x) => typeof x === 'string')).to.be.true;
+    });
+  });
+
   describe('notificationReceived', () => {
     const notification = 'TEST_NOTIFICATION';
     const payload = { foo: 'bar' };
@@ -85,6 +94,15 @@ describe('MMM-ViewNotifications', () => {
 
     it('should do nothing if there is a config error for the module', () => {
       test_module.has_config_error = true;
+      const stub = sandbox.stub(test_module, 'maybeAddNotification').returns(false);
+      test_module.notificationReceived(notification, payload, test_module);
+
+      expect(stub.callCount).to.equal(0);
+    });
+
+    it('should do nothing if the module is hidden', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (test_module as any).hidden = true;
       const stub = sandbox.stub(test_module, 'maybeAddNotification').returns(false);
       test_module.notificationReceived(notification, payload, test_module);
 
@@ -139,6 +157,15 @@ describe('MMM-ViewNotifications', () => {
     });
   });
 
+  describe('resume', () => {
+    it('should cleanup the notification list', () => {
+      sandbox.stub(test_module.logger, 'info').returns(undefined);
+      const stub = sandbox.stub(test_module, 'cleanupNotificationsList').returns(undefined);
+      test_module.resume();
+      expect(stub.callCount).to.equal(1);
+    });
+  });
+
   describe('scheduleNotificationCleanup', () => {
     const timeout_offset_in_ms = 50;
     let clock: SinonFakeTimers;
@@ -161,6 +188,18 @@ describe('MMM-ViewNotifications', () => {
       test_module.setConfig({ ...DEFAULT_CONFIG, timeout: 0 });
       const stub = sandbox.stub(test_module, 'cleanupNotificationsList').returns(undefined);
       test_module.scheduleNotificationCleanup();
+      clock.tick(test_module.config.timeout + timeout_offset_in_ms);
+
+      expect(stub.callCount).to.equal(0);
+      expect(stubUpdateDom.callCount).to.equal(0);
+    });
+
+    it('should do nothing if the timer expires when the module is hidden', () => {
+      test_module.setConfig({ ...DEFAULT_CONFIG, timeout: 8 });
+      const stub = sandbox.stub(test_module, 'cleanupNotificationsList').returns(undefined);
+      test_module.scheduleNotificationCleanup();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (test_module as any).hidden = true;
       clock.tick(test_module.config.timeout + timeout_offset_in_ms);
 
       expect(stub.callCount).to.equal(0);
@@ -465,6 +504,39 @@ describe('MMM-ViewNotifications', () => {
     it('should replace the {payloadList} with the type and size when the payload is an array', () => {
       const temp_payload = [1, 2, 3, 4, 5];
       const payload_val = `Array (${temp_payload.length})`;
+      const format = 'This is a {payloadList} for {payloadList}';
+      test_module.setConfig({ ...DEFAULT_CONFIG, format });
+      const expected = `This is a ${payload_val} for ${payload_val}`;
+      const actual = test_module.formatNotification({ ...NOTIFICATION_OBJ, payload: temp_payload });
+      expect(actual).to.equal(expected);
+    });
+
+    it('should replace the {payloadList} with the type when the payload is a string', () => {
+      const temp_payload = '';
+      const payload_val = `string`;
+      const format = 'This is a {payloadList} for {payloadList}';
+      test_module.setConfig({ ...DEFAULT_CONFIG, format });
+      const expected = `This is a ${payload_val} for ${payload_val}`;
+      const actual = test_module.formatNotification({ ...NOTIFICATION_OBJ, payload: temp_payload });
+      expect(actual).to.equal(expected);
+    });
+
+    it('should replace the {payloadList} with the type when the payload is a boolean', () => {
+      const is_temp_payload = true;
+      const payload_val = `boolean`;
+      const format = 'This is a {payloadList} for {payloadList}';
+      test_module.setConfig({ ...DEFAULT_CONFIG, format });
+      const expected = `This is a ${payload_val} for ${payload_val}`;
+      const actual = test_module.formatNotification({
+        ...NOTIFICATION_OBJ,
+        payload: is_temp_payload,
+      });
+      expect(actual).to.equal(expected);
+    });
+
+    it('should replace the {payloadList} with the type when the payload is a number', () => {
+      const temp_payload = 0;
+      const payload_val = `number`;
       const format = 'This is a {payloadList} for {payloadList}';
       test_module.setConfig({ ...DEFAULT_CONFIG, format });
       const expected = `This is a ${payload_val} for ${payload_val}`;

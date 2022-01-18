@@ -36,7 +36,7 @@ export const MODULE: Module.RegisterProperties<ModuleConfig> = {
     payload: Module.Notification['payload'],
     sender?: Module.ModuleProperties<unknown>,
   ) {
-    if (this.has_config_error) {
+    if (this.has_config_error || this.hidden) {
       return;
     }
     // Only process notifications coming from another module and not from MM itself
@@ -63,13 +63,20 @@ export const MODULE: Module.RegisterProperties<ModuleConfig> = {
     }
   },
 
+  resume() {
+    MMM_BASE.resume.call(this);
+    this.cleanupNotificationsList();
+  },
+
   scheduleNotificationCleanup(): void {
     if (this.config.timeout > 0) {
       // Add a little time to make sure the current notification has expired
       const timeout_offset_in_ms = 50;
       setTimeout(() => {
-        this.cleanupNotificationsList();
-        this.updateDom(this.config.updateAnimationSpeed);
+        if (!this.hidden) {
+          this.cleanupNotificationsList();
+          this.updateDom(this.config.updateAnimationSpeed);
+        }
       }, this.config.timeout + timeout_offset_in_ms);
     }
   },

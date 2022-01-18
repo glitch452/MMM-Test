@@ -16,6 +16,8 @@ describe('MmmBase', () => {
 
   beforeEach(() => {
     mmm_base = new MmmBase(SCHEMA) as BaseTesting;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (mmm_base as any).translate = () => '';
   });
 
   afterEach(() => {
@@ -81,6 +83,24 @@ describe('MmmBase', () => {
       mmm_base.init();
       const stub = SANDBOX.stub(mmm_base.logger, 'debug').returns(undefined);
       mmm_base.start();
+      expect(stub.callCount).to.be.at.least(1);
+    });
+  });
+
+  describe('suspend', () => {
+    it('should call the logger when run', () => {
+      mmm_base.init();
+      const stub = SANDBOX.stub(mmm_base.logger, 'info').returns(undefined);
+      mmm_base.suspend();
+      expect(stub.callCount).to.be.at.least(1);
+    });
+  });
+
+  describe('resume', () => {
+    it('should call the logger when run', () => {
+      mmm_base.init();
+      const stub = SANDBOX.stub(mmm_base.logger, 'info').returns(undefined);
+      mmm_base.resume();
       expect(stub.callCount).to.be.at.least(1);
     });
   });
