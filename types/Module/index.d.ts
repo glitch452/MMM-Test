@@ -21,15 +21,6 @@ declare namespace Module {
     sender: Module.ModuleProperties<unknown>;
   }
 
-  interface ModuleData {
-    classes: string;
-    file: string;
-    path: string;
-    header: string;
-    position: string;
-    index: number;
-  }
-
   interface ModuleProperties<T> {
     // Add module specific fields and methods to the module definition
     notifications: Notification[];
@@ -113,6 +104,63 @@ declare namespace Module {
     info: (message: string) => void;
     debug: (message: string) => void;
     setLogLevel?: (level: Module.LoggerLevels | Module.LoggerLevel) => void;
+  }
+
+  export interface ModuleData {
+    /**
+     * The css classes which are added to the module dom wrapper.
+     */
+    classes: string;
+
+    /**
+     * The filename of the core module file.
+     */
+    file: string;
+
+    /**
+     * The path of the module folder.
+     */
+    path: string;
+
+    /**
+     * The header added to the module.
+     */
+    header: string;
+
+    /**
+     * The position in which the instance will be shown.
+     */
+    position: string;
+
+    /**
+     * The index position of the module in the modules list of the users config file.
+     */
+    index: string;
+
+    /**
+     * The unique identifier for the module instance.
+     */
+    identifier: string;
+
+    /**
+     * The user-provided configuration (pre-merge)
+     */
+    config: Record<string, unknown>;
+
+    /**
+     * The name of the module
+     */
+    name: string;
+
+    /**
+     * Whether the module should be hidden on startup
+     */
+    hiddenOnStartup: boolean | undefined;
+
+    /**
+     * Whether the config should be deep-merged with the defaults
+     */
+    configDeepMerge: boolean;
   }
 }
 
