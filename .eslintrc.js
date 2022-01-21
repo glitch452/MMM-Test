@@ -9,18 +9,18 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  plugins: ['unused-imports', 'deprecation', 'mocha', 'chai-expect'],
+  plugins: ['unused-imports', 'deprecation', 'mocha', 'chai-expect', 'jsdoc'],
   extends: [
     'plugin:mocha/recommended',
     'plugin:chai-expect/recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+    'plugin:jsdoc/recommended',
     'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
   ],
   settings: {
-    react: {
-      version: '16',
-    },
+    react: { version: '16' },
+    jsdoc: { mode: 'typescript' },
   },
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
@@ -33,6 +33,11 @@ module.exports = {
     'mocha/no-mocha-arrows': 'off',
     'mocha/no-exclusive-tests': 'error',
     'deprecation/deprecation': 'error',
+    'jsdoc/require-param-type': 'off',
+    'jsdoc/require-property-type': 'off',
+    'jsdoc/require-returns-type': 'off',
+    'jsdoc/no-types': 'error',
+    'jsdoc/require-throws': 'error',
 
     /**
      * Adjust react rules for JSX to DOM

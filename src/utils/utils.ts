@@ -1,3 +1,9 @@
+/**
+ * @param input The template string
+ * @param find The substring to find within the input string
+ * @param replace The value to replace the find string with
+ * @returns The input string with the find values replaced by the replace value
+ */
 export function replaceAll(input: string, find: string, replace: string): string {
   if (find === replace) {
     return input;

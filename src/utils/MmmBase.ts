@@ -25,6 +25,8 @@ export const MmmBase = function <O extends MinimumConfig, D, I>(
 ) {
   /**
    * Initialize standard and module specific fields
+   *
+   * @param this Magic Mirror Module object
    */
   this.init = function (this: This) {
     this.has_config_error = false;
@@ -35,7 +37,9 @@ export const MmmBase = function <O extends MinimumConfig, D, I>(
 
   /**
    * Override the setConfig function to use zod for parsing the configuration values
-   * @param config (object) The user specified configuration options
+   *
+   * @param this Magic Mirror Module object
+   * @param config The user specified configuration options
    */
   this.setConfig = function (this: This, config: unknown): void {
     const result = schema.safeParse(config);

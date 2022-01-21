@@ -15,6 +15,8 @@ export default class MmmLogger implements Module.Logger {
   /**
    * The cut-off level for logging.
    * Lower-level logs will be logged, higher-level logs will no be.
+   *
+   * @returns the log level
    */
   get level() {
     return this._level;
@@ -27,6 +29,8 @@ export default class MmmLogger implements Module.Logger {
 
   /**
    * The module properties, used to inject the module name into the logs.
+   *
+   * @returns the module properties
    */
   get properties() {
     return this._properties;
@@ -39,6 +43,7 @@ export default class MmmLogger implements Module.Logger {
 
   /**
    * Create a new instance.
+   *
    * @param properties The module properties, used to inject the module name into the logs.
    * @param level The cut-off level for logging.
    * @param transport The underlying logger where the logs are sent.
@@ -55,6 +60,7 @@ export default class MmmLogger implements Module.Logger {
 
   /**
    * Change the current level of the logger.
+   *
    * @param level The cut-off level for logging.
    */
   setLogLevel(level: Module.LoggerLevels | Module.LoggerLevel) {
@@ -67,6 +73,7 @@ export default class MmmLogger implements Module.Logger {
 
   /**
    * Used to log non-categorized log messages.
+   *
    * @param message The string to be logged
    */
   log(message: string) {
@@ -75,6 +82,7 @@ export default class MmmLogger implements Module.Logger {
 
   /**
    * Used to log messages in the error category.
+   *
    * @param message The string to be logged
    */
   error(message: string) {
@@ -83,6 +91,7 @@ export default class MmmLogger implements Module.Logger {
 
   /**
    * Used to log messages in the warning category.
+   *
    * @param message The string to be logged
    */
   warn(message: string) {
@@ -93,6 +102,7 @@ export default class MmmLogger implements Module.Logger {
 
   /**
    * Used to log messages in the info category.
+   *
    * @param message The string to be logged
    */
   info(message: string) {
@@ -103,6 +113,7 @@ export default class MmmLogger implements Module.Logger {
 
   /**
    * Used to log messages in the debug category.
+   *
    * @param message The string to be logged
    */
   debug(message: string) {
@@ -114,6 +125,7 @@ export default class MmmLogger implements Module.Logger {
   /**
    * Formats the raw log message by adding the module name.
    * For debug messages, the time and module index are also added.
+   *
    * @param message The string to be logged
    * @returns The formatted log string
    */
@@ -128,6 +140,7 @@ export default class MmmLogger implements Module.Logger {
 
   /**
    * Converts the level name to the enum representation.
+   *
    * @throws an Error if an invalid level name is provided
    * @param level_name The name of the log level to be converted
    * @returns The enum representation of the requested level
