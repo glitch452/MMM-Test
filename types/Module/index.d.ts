@@ -13,10 +13,16 @@ declare namespace Module {
 
   function register<T>(module_name: string, module_properties: RegisterProperties<T>): void;
 
+  type NotificationIdentifier =
+    | 'ALL_MODULES_STARTED'
+    | 'DOM_OBJECTS_CREATED'
+    | 'MODULE_DOM_CREATED'
+    | string;
+
   interface Notification {
     datetime: Date;
     timeout: Date;
-    notification: string;
+    notification: NotificationIdentifier;
     payload?: unknown;
     sender: Module.ModuleProperties<unknown>;
   }
@@ -43,7 +49,7 @@ declare namespace Module {
     readonly data: ModuleData;
     readonly lockStrings: string[];
     config: T;
-    defaults: T;
+    defaults: Partial<T>;
     requiresVersion: string;
 
     setConfig: (config: unknown) => void;
@@ -58,7 +64,7 @@ declare namespace Module {
     getDom: () => React.ReactNode;
     getHeader: () => string;
     notificationReceived: (
-      notification: string,
+      notification: NotificationIdentifier,
       payload: unknown,
       sender?: ModuleProperties<unknown>,
     ) => void;
@@ -69,7 +75,7 @@ declare namespace Module {
     // Instance methods
     readonly file: (filename: string) => string;
     readonly updateDom: (speed?: number) => void;
-    readonly sendNotification: (notification: string, payload: unknown) => void;
+    readonly sendNotification: (notification: NotificationIdentifier, payload: unknown) => void;
     readonly sendSocketNotification: (notification: string, payload: unknown) => void;
     readonly hide: (
       speed?: number,

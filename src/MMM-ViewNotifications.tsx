@@ -32,8 +32,8 @@ export const MODULE: Module.RegisterProperties<ModuleConfig> = {
   },
 
   notificationReceived(
-    notification: string,
-    payload: Module.Notification['payload'],
+    notification: Module.NotificationIdentifier,
+    payload: unknown,
     sender?: Module.ModuleProperties<unknown>,
   ) {
     if (this.has_config_error || this.hidden) {
