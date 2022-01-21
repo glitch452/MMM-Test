@@ -2,6 +2,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import banner from 'rollup-plugin-banner2';
+import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
 const MODULE_NAME = 'MMM-ViewNotifications';
@@ -23,7 +24,13 @@ const BANNER_TEXT = [
 export default [
   {
     input: `./src/${MODULE_NAME}.tsx`,
-    plugins: [typescript({ module: 'ESNext' }), resolve(), commonjs(), banner(() => BANNER_TEXT)],
+    plugins: [
+      typescript({ module: 'ESNext' }),
+      resolve(),
+      commonjs(),
+      terser(),
+      banner(() => BANNER_TEXT),
+    ],
     output: {
       file: `./${MODULE_NAME}.js`,
       format: 'iife',
