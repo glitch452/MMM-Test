@@ -1,0 +1,11 @@
+exports["MMM-ViewNotifications getDom should render no notifications"] = "<div class=\"small\"><ul class=\"fa-ul\"></ul></div>";
+
+exports["MMM-ViewNotifications getDom should render one notification"] = "<div class=\"small\"><ul class=\"fa-ul\"><li><span class=\"fa-li fa fa-bullhorn\"></span>13:00:00: \"test-module\" sent \"TEST_NOTIFICATION\"</li></ul></div>";
+
+exports["MMM-ViewNotifications getDom should render oldest notifications first when newestOnTop is false"] = "<div class=\"small\"><ul class=\"fa-ul\"><li><span class=\"fa-li fa fa-bullhorn\"></span>1</li><li><span class=\"fa-li fa fa-bullhorn\"></span>2</li></ul></div>";
+
+exports["MMM-ViewNotifications getDom should render oldest notifications last when newestOnTop is true"] = "<div class=\"small\"><ul class=\"fa-ul\"><li><span class=\"fa-li fa fa-bullhorn\"></span>2</li><li><span class=\"fa-li fa fa-bullhorn\"></span>1</li></ul></div>";
+
+exports["MMM-ViewNotifications getDom should render the correct icon"] = "<div class=\"small\"><ul class=\"fa-ul\"><li><span class=\"fa-li fa fa-test-icon\"></span>13:00:00: \"test-module\" sent \"TEST_NOTIFICATION\"</li></ul></div>";
+
+exports["MMM-ViewNotifications getDom should render the configuration error list when there is a config error"] = "<div class=\"loading small\">CONFIGURATION_ERROR<br>'timeout': Value should be greater than or equal to 0</div>";

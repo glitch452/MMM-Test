@@ -1,0 +1,10 @@
+exports["serializeElement serializeElement should serialize a basic element properly"] = "<div></div>";
+
+exports["serializeElement serializeElement should serialize an element with properties properly"] = "<div class=\"css-class\"></div>";
+
+exports["serializeElement serializeElement should serialize a basic element properly when passed in as a function"] = "<div></div>";
+
+exports["serializeElement serializeElementSandbox should serialize a basic element properly"] = "<div></div>";
+
+exports["serializeElement serializeElementSandbox should serialize an element with properties properly"] = "<div class=\"css-class\"></div>";
+

@@ -1,0 +1,8 @@
+exports["LoadingErrors should render with no errors"] = "<div class=\"loading small\"></div>";
+
+exports["LoadingErrors should render with no errors and a title"] = "<div class=\"loading small\">test</div>";
+
+exports["LoadingErrors should render with 1 error"] = "<div class=\"loading small\">test<br>error one</div>";
+
+exports["LoadingErrors should render with more than 1 error"] = "<div class=\"loading small\">error one<br>error two</div>";
+

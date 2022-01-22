@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { ModuleConfig, module_config_schema } from './ModuleConfig';
 import { replaceAll } from './utils/utils';
-import React from 'jsx-dom-cjs';
+import React, { JSX } from 'jsx-dom-cjs';
 import ErrorList from './components/ErrorList';
 import { MmmBase } from './utils/MmmBase';
 
@@ -161,7 +161,7 @@ export const MODULE: Module.RegisterProperties<ModuleConfig> = {
     return output;
   },
 
-  getDom(): React.ReactNode {
+  getDom(): JSX.Element {
     if (this.has_config_error) {
       return (
         <ErrorList title={this.translate('CONFIGURATION_ERROR')} error_list={this.config_errors} />

@@ -61,7 +61,7 @@ declare namespace Module {
     getTranslations: () => Record<string, string>;
     getTemplate: () => string;
     getTemplateData: () => unknown;
-    getDom: () => React.ReactNode;
+    getDom: () => HTMLElement | SVGElement;
     getHeader: () => string;
     notificationReceived: (
       notification: NotificationIdentifier,

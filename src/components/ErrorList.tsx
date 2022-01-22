@@ -11,7 +11,7 @@ export interface LoadingErrorsProps {
  * @param props The configuration options
  * @param props.title The title to render above the messages
  * @param props.error_list The list of messages to render
- * @returns A JSX Component
+ * @returns A JSX Element
  */
 const ErrorList = ({ title, error_list }: LoadingErrorsProps): JSX.Element => {
   return (

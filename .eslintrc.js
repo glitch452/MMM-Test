@@ -376,7 +376,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.spec.ts'],
+      files: ['*.spec.{ts,tsx}'],
       rules: {
         '@typescript-eslint/no-magic-numbers': ['off'],
         '@typescript-eslint/consistent-type-assertions': ['off'],

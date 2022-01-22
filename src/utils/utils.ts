@@ -1,4 +1,6 @@
 /**
+ * Replace all occurrences of a string within a string.
+ *
  * @param input The template string
  * @param find The substring to find within the input string
  * @param replace The value to replace the find string with

@@ -2,20 +2,17 @@ global.Module = {
   register: () => undefined,
 } as unknown as typeof Module;
 
-import { JSDOM } from 'jsdom';
 import { expect } from 'chai';
 import sinon, { SinonFakeTimers, SinonSandbox, SinonSpy, SinonStub } from 'sinon';
 import { MODULE, MMM_BASE } from './MMM-ViewNotifications';
 import { ModuleConfig } from './ModuleConfig';
+import { serializeElement } from './utils/serializeElement';
+import 'chai-snapshot-matcher';
 
 const NOTIFICATION = 'TEST_NOTIFICATION';
 const PAYLOAD = { foo: 'bar' };
 const DEFAULT_CONFIG = { logLevel: 'DEBUG' };
 const MODULE_NAME = 'test-module';
-
-const WINDOW = global.window;
-const DOCUMENT = global.document;
-const NAVIGATOR = global.navigator;
 
 const sandbox: SinonSandbox = sinon.createSandbox();
 
@@ -556,14 +553,8 @@ describe('MMM-ViewNotifications', () => {
 
   describe('getDom', () => {
     let NOTIFICATION_OBJ: Module.Notification;
-    let dom: JSDOM;
 
     beforeEach(() => {
-      dom = new JSDOM('<!doctype html><html><body></body></html>');
-      global.window = dom.window as unknown as Window & typeof globalThis;
-      global.document = dom.window.document;
-      global.navigator = dom.window.navigator;
-
       const datetime = new Date('2021-01-08T13:00:00');
       NOTIFICATION_OBJ = {
         datetime,
@@ -574,79 +565,57 @@ describe('MMM-ViewNotifications', () => {
       };
     });
 
-    afterEach(() => {
-      global.window = WINDOW;
-      global.document = DOCUMENT;
-      global.navigator = NAVIGATOR;
+    it('should render no notifications', function () {
+      const actual = serializeElement(test_module.getDom());
+      expect(actual).to.matchSnapshot(this);
     });
 
-    it('should render no notifications', () => {
-      const dom_objects = test_module.getDom();
-      const actual = dom_objects.outerHTML;
-      const expected = '<div class="small"><ul class="fa-ul"></ul></div>';
-
-      expect(actual).to.equal(expected);
-    });
-
-    it('should render one notification', () => {
+    it('should render one notification', function () {
       test_module.notifications = [NOTIFICATION_OBJ];
-      const dom_objects = test_module.getDom();
-      const actual = dom_objects.outerHTML;
-      const expected =
-        '<div class="small"><ul class="fa-ul"><li><span class="fa-li fa fa-bullhorn"></span>13:00:00: "test-module" sent "TEST_NOTIFICATION"</li></ul></div>';
+      const actual = serializeElement(test_module.getDom());
 
-      expect(actual).to.equal(expected);
+      expect(actual).to.matchSnapshot(this);
     });
 
-    it('should render oldest notifications first when newestOnTop is false', () => {
+    it('should render oldest notifications first when newestOnTop is false', function () {
       test_module.setConfig({ ...DEFAULT_CONFIG, format: '{notification}', newestOnTop: false });
       const notification_1 = { ...NOTIFICATION_OBJ, notification: '1' };
       const notification_2 = { ...NOTIFICATION_OBJ, notification: '2' };
       test_module.notifications = [notification_1, notification_2];
-      const dom_objects = test_module.getDom();
-      const actual = dom_objects.outerHTML;
-      const expected =
-        '<div class="small"><ul class="fa-ul"><li><span class="fa-li fa fa-bullhorn"></span>1</li><li><span class="fa-li fa fa-bullhorn"></span>2</li></ul></div>';
+      const actual = serializeElement(test_module.getDom());
 
-      expect(actual).to.equal(expected);
+      expect(actual).to.matchSnapshot(this);
       expect(test_module.notifications[0]).to.equal(notification_1);
       expect(test_module.notifications[1]).to.equal(notification_2);
     });
 
-    it('should render oldest notifications last when newestOnTop is true', () => {
+    it('should render oldest notifications last when newestOnTop is true', function () {
       test_module.setConfig({ ...DEFAULT_CONFIG, format: '{notification}', newestOnTop: true });
       const notification_1 = { ...NOTIFICATION_OBJ, notification: '1' };
       const notification_2 = { ...NOTIFICATION_OBJ, notification: '2' };
       test_module.notifications = [notification_1, notification_2];
-      const dom_objects = test_module.getDom();
-      const actual = dom_objects.outerHTML;
-      const expected =
-        '<div class="small"><ul class="fa-ul"><li><span class="fa-li fa fa-bullhorn"></span>2</li><li><span class="fa-li fa fa-bullhorn"></span>1</li></ul></div>';
 
-      expect(actual).to.equal(expected);
+      const actual = serializeElement(test_module.getDom());
+
+      expect(actual).to.matchSnapshot(this);
       expect(test_module.notifications[0]).to.equal(notification_1);
       expect(test_module.notifications[1]).to.equal(notification_2);
     });
 
-    it('should render the correct icon', () => {
+    it('should render the correct icon', function () {
       test_module.notifications = [NOTIFICATION_OBJ];
       test_module.setConfig({ ...DEFAULT_CONFIG, icons: { [test_module.name]: 'test-icon' } });
-      const dom_objects = test_module.getDom();
-      const actual = dom_objects.outerHTML;
-      const expected =
-        '<div class="small"><ul class="fa-ul"><li><span class="fa-li fa fa-test-icon"></span>13:00:00: "test-module" sent "TEST_NOTIFICATION"</li></ul></div>';
+      const actual = serializeElement(test_module.getDom());
 
-      expect(actual).to.equal(expected);
+      expect(actual).to.matchSnapshot(this);
     });
 
-    it('should render the configuration error list when there is a config error', () => {
+    it('should render the configuration error list when there is a config error', function () {
       sandbox.stub(test_module.logger, 'error').returns(undefined);
       test_module.setConfig({ ...DEFAULT_CONFIG, timeout: -1 });
-      const dom_objects = test_module.getDom();
-      const actual = dom_objects.outerHTML;
-      const expected = `<div class="loading small">CONFIGURATION_ERROR<br>'timeout': Value should be greater than or equal to 0</div>`;
+      const actual = serializeElement(test_module.getDom());
 
-      expect(actual).to.equal(expected);
+      expect(actual).to.matchSnapshot(this);
     });
   });
 });

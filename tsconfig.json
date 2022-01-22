@@ -17,6 +17,7 @@
     "removeComments": true,
     "paths": {
       "logger": ["mm_mocks/logger/*"],
+      "src/*": ["src/*"],
       "*": ["node_modules/*"]
     },
     "skipLibCheck": true,
