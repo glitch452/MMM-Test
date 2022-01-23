@@ -1,5 +1,8 @@
 {
   "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
@@ -20,5 +23,20 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  "cSpell.words": ["currentweather", "datetime", "Dearden", "weatherforecast"]
+  "cSpell.words": [
+    "Albus",
+    "bazz",
+    "behaviour",
+    "camelcase",
+    "currentweather",
+    "datetime",
+    "esque",
+    "got'chyour",
+    "iife",
+    "magicmirror",
+    "Ooops",
+    "treeshake",
+    "viewnotifications",
+    "weatherforecast"
+  ]
 }
